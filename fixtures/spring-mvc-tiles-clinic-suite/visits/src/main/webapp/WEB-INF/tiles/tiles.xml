@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tiles-definitions>
+    <definition name="visits.calendar" extends="vets.list">
+        <put-attribute name="title" value="Visit calendar" />
+        <put-attribute name="body" value="/WEB-INF/views/visits/calendar.jsp" />
+    </definition>
+
+    <definition name="visits.detail" extends="base.sidebar">
+        <put-attribute name="body" value="/WEB-INF/views/visits/detail.jsp" />
+        <put-attribute name="side" value="base.sidebar" />
+    </definition>
+
+    <definition name="visits.archived" extends="reports.layout">
+        <put-attribute name="body" value="/WEB-INF/views/visits/archived.jsp" />
+    </definition>
+
+    <definition name="common.error" extends="base.layout">
+        <put-attribute name="body" value="/WEB-INF/views/visits/error.jsp" />
+    </definition>
+</tiles-definitions>

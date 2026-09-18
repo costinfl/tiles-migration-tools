@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="base.layout" template="/WEB-INF/views/layouts/main.jsp">
+        <put-attribute name="title" value="Clinic Suite" />
+        <put-attribute name="header" value="/WEB-INF/views/fragments/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/fragments/footer.jsp" />
+        <put-attribute name="body" value="" />
+    </definition>
+
+    <definition name="base.sidebar" extends="base.layout" preparer="com.example.shared.MenuPreparer">
+        <put-attribute name="nav" value="/WEB-INF/views/fragments/nav.jsp" />
+    </definition>
+
+    <definition name="base.print" extends="base.layout">
+        <put-attribute name="header" value="" />
+        <put-attribute name="footer" value="" />
+    </definition>
+</tiles-definitions>

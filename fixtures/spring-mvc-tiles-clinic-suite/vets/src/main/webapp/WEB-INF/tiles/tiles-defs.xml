@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tiles-definitions>
+    <definition name="vets.list" extends="base.sidebar">
+        <put-attribute name="title" value="Veterinarians" />
+        <put-attribute name="body" value="/WEB-INF/views/vets/list.jsp" />
+    </definition>
+
+    <definition name="vets.*.detail" extends="base.sidebar">
+        <put-attribute name="body" value="/WEB-INF/views/vets/{1}.jsp" />
+    </definition>
+
+    <definition name="vets.legacy" extends="base.layout">
+        <put name="title" value="Legacy vet screen" />
+        <put name="body" value="/WEB-INF/views/vets/legacy.jsp" />
+    </definition>
+
+    <definition name="common.error" extends="base.layout">
+        <put-attribute name="body" value="/WEB-INF/views/error.jsp" />
+    </definition>
+</tiles-definitions>

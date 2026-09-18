@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans">
+
+  <bean id="tilesConfigurer"
+        class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+    <property name="definitions">
+      <list>
+        <value>/WEB-INF/tiles/tiles.xml</value>
+        <value>/WEB-INF/tiles/tiles-defs.xml</value>
+        <value>/WEB-INF/tiles/tiles-reports.xml</value>
+      </list>
+    </property>
+    <property name="checkRefresh" value="true" />
+  </bean>
+
+  <bean id="tilesViewResolver"
+        class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+    <property name="order" value="1" />
+  </bean>
+</beans>
