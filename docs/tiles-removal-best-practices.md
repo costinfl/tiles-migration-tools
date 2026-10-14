@@ -9,6 +9,8 @@ This guide is for developers assigned specific JSPs to migrate away from Apache 
 - Review the `tiles-inventory.csv` report for your module to understand the tiles definitions you depend on
 - Understand the target replacement strategy (Thymeleaf, JSP includes, SiteMesh, etc.)
 
+**Key context:** Each module is deployed independently to its own Tomcat instance. There are no cross-module conflicts—your module's `tiles.xml`, JSP files, and definitions are isolated. If the split tool reports duplicate file names across modules, that is not a problem and requires no special handling.
+
 ## Phase 1: Understanding Your Tiles Usage
 
 ### 1.1 Identify Tiles in Your JSP
@@ -67,12 +69,20 @@ For each JSP you are migrating:
    <tiles:getAsString name="pageTitle" />     <!-- Expect as variable -->
    ```
 
-### 1.3 Check for Shadowed Tiles
+### 1.3 Shadowed Tiles Are Not a Concern
 
-If multiple modules define the same tile name (e.g., multiple `header.jsp` files), note this in your migration plan. You may need to:
+The split tool may report duplicate file names across modules (e.g., `header.jsp` in multiple modules). **This is not a problem** because:
+
+- Each module is deployed independently to its own Tomcat instance
+- Each module's `tiles.xml` and view files are scoped to its own app context
+- There is no conflict — module-a's `header.jsp` and module-b's `header.jsp` never collide
+
+**You do not need to:**
 - Rename files to be module-specific
-- Consolidate to a single shared version
-- Reference the correct one explicitly in your new implementation
+- Consolidate duplicates
+- Reference versions explicitly
+
+Just migrate each module independently. If shared layouts become needed later (during Spring Boot migration), that's a separate refactoring outside this project scope.
 
 ## Phase 2: Choose Your Migration Pattern
 
@@ -548,26 +558,17 @@ request.getRequestDispatcher("/WEB-INF/views/layout.jsp").forward(request, respo
 <link rel="stylesheet" th:href="@{/css/style.css}">
 ```
 
-### Pitfall 5: Shadowed Tiles Resolved to Wrong File
+### Pitfall 5: Not a Pitfall — Module Independence
 
-**Problem:** Multiple modules define the same tile name; definition order matters.
-```xml
-<!-- module-a/tiles.xml -->
-<definition name="header" value="/WEB-INF/views/a/header.jsp" />
+**What looks like a problem:** The split tool reports duplicate file names across modules (e.g., multiple `header.jsp` files, multiple definitions named `header`).
 
-<!-- module-b/tiles.xml -->
-<definition name="header" value="/WEB-INF/views/b/header.jsp" />
-<!-- First one loaded wins -->
-```
+**Why it's not actually a problem:** Each module runs in its own Tomcat instance with its own classloader and resource context. Module-a's `tiles.xml` and module-b's `tiles.xml` never collide—they're in separate applications. Same for their JSP files.
 
-**Solution:** Use module-scoped names.
-```xml
-<!-- module-a/tiles.xml -->
-<definition name="moduleA.header" value="/WEB-INF/views/a/header.jsp" />
-
-<!-- module-b/tiles.xml -->
-<definition name="moduleB.header" value="/WEB-INF/views/b/header.jsp" />
-```
+**What this means for you:**
+- You **do not** need to rename files for uniqueness
+- You **do not** need to consolidate duplicates
+- You can migrate your module independently
+- Duplicate definition names only matter *within* your own module's `tiles.xml`
 
 ## Checklist for Your Task
 
